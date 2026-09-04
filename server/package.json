@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "type": "commonjs",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
-    "start": "node src/index.js",
-    "seed": "node src/seed.js"
+    "start": "node --no-warnings src/index.js",
+    "seed": "node --no-warnings src/seed.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^13.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "express": "^5.2.1",
