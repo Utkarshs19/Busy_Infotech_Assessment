@@ -26,6 +26,23 @@ volume deployment should move to Postgres. Because the SQL is hand-written rathe
 behind an ORM abstraction, that migration means rewriting queries, not just swapping a
 connection string — a cost I accepted for this submission's timeline.
 
+**Second reversal, after a reviewer tried to run this locally:** `better-sqlite3` itself
+turned out to have the same class of problem as Prisma, just one step removed. On a fresh
+Windows machine running a very new Node version (24), there was no prebuilt native binary
+available, so `npm install` fell back to compiling it via `node-gyp`, which requires
+Visual Studio's C++ build tools — not something most people have installed, and not
+something I could ask a reviewer running this on their own machine to go install just to
+try the app. Rather than tell reviewers to install Visual Studio or manage multiple Node
+versions, I switched the database driver again, this time to `node:sqlite`, which has
+shipped built into Node itself since 22.5 and needs no native compilation step at all. The
+API is close enough to `better-sqlite3` (`prepare().run()/get()/all()`, `lastInsertRowid`)
+that this was a small, mechanical change to `server/src/db/index.js` and `package.json`
+rather than a rewrite of any query. I'm noting this as a second reversal rather than
+quietly fixing it and moving on, because "the happy path worked on my machine" was
+exactly the failure mode goal-oriented testing should have caught earlier — I'd tested the
+API extensively, but not the install experience on a platform other than the one I built
+on.
+
 ## 2. JWT in `localStorage`, not httpOnly cookies
 
 **What I chose:** the client stores the JWT in `localStorage` and sends it as an

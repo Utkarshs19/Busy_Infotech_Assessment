@@ -28,6 +28,11 @@ Then open http://localhost:5173 and sign in with one of the demo accounts listed
 `SUBMISSION.md`.
 
 ## Stack
-- **Server:** Node.js, Express, `better-sqlite3` (raw SQL, no ORM — see `docs/decisions.md`)
+- **Server:** Node.js 22.5+ (needs the built-in `node:sqlite` module), Express,
+  raw SQL / no ORM — see `docs/decisions.md`
 - **Client:** React (Vite), `react-router-dom`, `recharts`
 - **Auth:** JWT bearer tokens, bcrypt password hashing
+
+No native modules are used anywhere, so `npm install` never needs a C++ compiler or
+Visual Studio — this was a deliberate fix after an earlier version required exactly that
+on Windows (see `docs/decisions.md`).
