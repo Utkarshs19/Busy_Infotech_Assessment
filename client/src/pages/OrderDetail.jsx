@@ -10,7 +10,7 @@ const NEXT_STATUS = {
   Ready: 'Served',
 };
 
-function money(cents) { return `$${(cents / 100).toFixed(2)}`; }
+function money(cents) { return `₹${(cents / 100).toFixed(2)}`; }
 
 export default function OrderDetail({ onChanged }) {
   const { id } = useParams();

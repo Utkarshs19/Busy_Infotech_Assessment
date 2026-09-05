@@ -86,7 +86,7 @@ export default function Menu() {
             <input value={newName} onChange={(e) => setNewName(e.target.value)} required placeholder="e.g. Garlic Bread" />
           </div>
           <div className="field" style={{ minWidth: 100 }}>
-            <label>Price ($)</label>
+            <label>Price (₹)</label>
             <input type="number" step="0.01" min="0" value={newPrice} onChange={(e) => setNewPrice(e.target.value)} required />
           </div>
           <button className="btn primary" type="submit">Add item</button>
@@ -98,7 +98,7 @@ export default function Menu() {
           <h3>Bulk update ({selected.size} selected)</h3>
           <div className="toolbar">
             <div className="field">
-              <label>Set price to ($, optional)</label>
+              <label>Set price to (₹, optional)</label>
               <input type="number" step="0.01" min="0" value={bulkPrice} onChange={(e) => setBulkPrice(e.target.value)} placeholder="leave blank to skip" />
             </div>
             <div className="field">
@@ -139,7 +139,7 @@ export default function Menu() {
                   </td>
                 )}
                 <td>{item.name} {!!item.archived && <span className="subtle">(archived)</span>}</td>
-                <td>${(item.price_cents / 100).toFixed(2)}</td>
+                <td>₹{(item.price_cents / 100).toFixed(2)}</td>
                 <td>{item.available ? 'Yes' : 'No'}</td>
                 <td style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
                   {isManager && !item.archived && (
