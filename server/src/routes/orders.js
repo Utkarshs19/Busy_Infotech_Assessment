@@ -20,17 +20,17 @@ function canActOn(order, user) {
 function logEvent(orderId, actorId, fields) {
   db.prepare(
     `INSERT INTO order_events (order_id, type, from_status, to_status, line_id, reason, note, actor_user_id)
-     VALUES (@order_id, @type, @from_status, @to_status, @line_id, @reason, @note, @actor_user_id)`
-  ).run({
-    order_id: orderId,
-    type: fields.type,
-    from_status: fields.from_status ?? null,
-    to_status: fields.to_status ?? null,
-    line_id: fields.line_id ?? null,
-    reason: fields.reason ?? null,
-    note: fields.note ?? null,
-    actor_user_id: actorId,
-  });
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    orderId,
+    fields.type,
+    fields.from_status ?? null,
+    fields.to_status ?? null,
+    fields.line_id ?? null,
+    fields.reason ?? null,
+    fields.note ?? null,
+    actorId
+  );
 }
 
 function serializeOrderSummary(o) {
@@ -132,10 +132,10 @@ router.get('/mine', requireAuth, (req, res) => {
   const rows = db.prepare(
     `SELECT o.*, u.name AS primary_waiter_name
      FROM orders o JOIN users u ON u.id = o.primary_waiter_id
-     WHERE o.primary_waiter_id = @uid
-        OR EXISTS (SELECT 1 FROM order_collaborators c WHERE c.order_id = o.id AND c.user_id = @uid)
+     WHERE o.primary_waiter_id = ?
+        OR EXISTS (SELECT 1 FROM order_collaborators c WHERE c.order_id = o.id AND c.user_id = ?)
      ORDER BY o.placed_at DESC`
-  ).all({ uid: req.user.id });
+  ).all(req.user.id, req.user.id);
   res.json({ orders: rows.map(serializeOrderSummary) });
 });
 
