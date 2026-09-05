@@ -1,5 +1,8 @@
 # Restaurant Orders — "The Corkboard"
 
+Vercel LINK :- https://busy-infotech-assessment.vercel.app/
+Render LINK :- https://busy-infotech-assessment-1.onrender.com/
+
 A restaurant order-management system replacing paper tickets and a corkboard. See
 `docs/architecture.md`, `docs/schema.md`, `docs/decisions.md`, `docs/plan.md`, and
 `docs/ai-prompts.md` for the full write-up, and `SUBMISSION.md` for demo credentials and
