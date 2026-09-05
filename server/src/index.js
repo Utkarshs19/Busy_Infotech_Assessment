@@ -1,7 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 
-require('./db'); // ensures schema is applied on boot
+const db = require('./db'); // ensures schema is applied on boot
+
+// Render's free tier has no Shell access and an ephemeral filesystem, so there's
+// no way to manually run `npm run seed` after deploy or after a restart wipes the
+// disk. Auto-seed once on boot if the database has no users yet, so the app is
+// always usable right after a fresh deploy without any extra manual step.
+const userCount = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
+if (userCount === 0) {
+  console.log('No users found — running seed script automatically...');
+  require('./seed');
+}
 
 const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
